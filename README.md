@@ -30,3 +30,5 @@ git remote add origin https://github.com/YOUR-ACCOUNT/YOUR-REPO.git
 git push -u origin main
 ```
 4. Actionsの「Publish festival board」が成功したらAzure PortalのWebアプリ「概要」から既定のドメインを開く。画像付き投稿を作り、別ブラウザーで同じ画像と投票結果を確認する。Teamsにrequirements.md・公開サイトURL・GitHub URLを提出する。
+
+https://festival-board-luke12458-bgexgkf0czd2fsbh.japaneast-01.azurewebsites.net/
