@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>文化祭の二択会議</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/script.js" defer></script>
+</head>
+<body>
+<main>
+  <header><strong>文化祭実行委員室</strong><a href="#new">議題を出す ↓</a></header>
+  <section class="poster"><h1>文化祭の<br>二択会議<span>。</span></h1><p>クラスで迷ったら、ふたつの案を並べてみよう。</p></section>
+  <h2>みんなの議題</h2>
+  <p class="note">案を選ぶと得票数が見えます。同じブラウザーでは後から投票先を変更できます。</p>
+  <section id="board" aria-label="投票一覧">
+    {% for p in polls %}
+    <article><h3>{{ p.title }}</h3>
+      {% if p.image %}<img loading="lazy" src="{{ url_for('image', name=p.image) }}" alt="議題「{{ p.title }}」の参考画像">{% endif %}
+      <form class="choices" method="post" action="{{ url_for('vote', pid=p.RowKey) }}">
+        {% for label in [p.a,p.b] %}
+        <button class="vote-{{ 'a' if loop.first else 'b' }}" name="choice" value="{{ loop.index0 }}" aria-pressed="{{ 'true' if p.mine == loop.index0 else 'false' }}">{{ 'A' if loop.first else 'B' }}　{{ label }}{% if p.mine != none %}　{{ p.counts[loop.index0] }}票{% endif %}</button>
+        {% endfor %}
+      </form>
+    </article>
+    {% else %}<p>最初の議題を投稿しよう。</p>{% endfor %}
+  </section>
+  <section id="new"><h2>議題を出す</h2>
+    <form method="post" action="/polls" enctype="multipart/form-data">
+      <label>クラスで決めたいこと<input name="topic" required maxlength="60" placeholder="例：クラス看板のテーマは？"></label>
+      <div class="pair">
+        <label>A案<input name="a" required maxlength="32" placeholder="例：レトロな映画館"></label>
+        <label>B案<input name="b" required maxlength="32" placeholder="例：夜の遊園地"></label>
+      </div>
+      <label>参考画像（任意・JPEG／PNG、3 MBまで）<input type="file" name="photo" accept="image/jpeg,image/png"></label><p id="file-note" role="status"></p>
+      <button class="submit">議題を追加する</button>
+    </form>
+  </section>
+  <p id="status" role="status"></p>
+  <footer>投稿と画像は閲覧者に公開されます。学校名や実名は書かないでください。</footer>
+</main>
+</body>
+</html>
